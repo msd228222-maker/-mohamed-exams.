@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>امتحانات محمد شهاب الدين</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Tahoma,Arial,sans-serif;
+  background:#f3f6fb;
+  color:#182238;
+  line-height:1.8;
+}
+header{
+  background:linear-gradient(135deg,#101d40,#2457a7);
+  color:white;
+  text-align:center;
+  padding:30px 15px;
+  border-radius:0 0 28px 28px;
+}
+header h1{font-size:23px;margin:0 0 8px}
+header p{margin:0;color:#dbeafe;font-size:14px}
+.container{max-width:760px;margin:22px auto;padding:0 14px}
+.card{
+  background:white;
+  padding:20px;
+  margin-bottom:17px;
+  border-radius:18px;
+  box-shadow:0 5px 20px #1e3a8a0d;
+}
+h2{font-size:20px;margin-top:0;color:#173b7a}
+select,button{
+  font-family:inherit;
+  font-size:16px;
+  border-radius:12px;
+  padding:13px;
+}
+select{
+  width:100%;
+  border:1px solid #d1d9e6;
+  background:white;
+  margin:8px 0 15px;
+}
+button{
+  border:none;
+  cursor:pointer;
+  font-weight:bold;
+}
+.primary{background:#2457a7;color:white;width:100%}
+.secondary{background:#e7eefb;color:#173b7a;width:100%;margin-top:10px}
+.question{
+  border:1px solid #e4e9f2;
+  padding:17px;
+  margin:15px 0;
+  border-radius:15px;
+  background:#fff;
+}
+.question h3{font-size:17px;margin:0 0 12px}
+.option{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:12px;
+  border:1px solid #e1e7f0;
+  border-radius:11px;
+  margin:8px 0;
+  cursor:pointer;
+}
+.option:has(input:checked){
+  background:#edf4ff;
+  border-color:#3975cc;
+}
+.option input{margin-top:7px;accent-color:#2457a7}
+#result{display:none}
+.score{
+  text-align:center;
+  background:#eaf2ff;
+  padding:20px;
+  border-radius:15px;
+}
+.score strong{font-size:35px;color:#174b9b}
+.review{
+  padding:15px;
+  border-radius:12px;
+  margin:12px 0;
+  border-right:5px solid #9ca3af;
+  background:#f8fafc;
+}
+.correct{border-color:#16a34a;background:#f0fdf4}
+.wrong{border-color:#dc2626;background:#fef2f2}
+.answer{font-weight:bold;color:#166534}
+.explanation{color:#334155;margin-top:8px}
+footer{text-align:center;color:#64748b;padding:25px 12px;font-size:14px}
+.small{font-size:13px;color:#64748b}
+.badge{
+  display:inline-block;
+  background:#e8efff;
+  color:#2457a7;
+  padding:3px 10px;
+  border-radius:30px;
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎓 منصة امتحانات الطالب</h1>
+  <p>إعداد وتصميم الطالب / محمد شهاب الدين محمد</p>
+  <p>اختبر نفسك • صحح إجاباتك • افهم أخطاءك</p>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <span class="badge">المحاسبة المالية</span>
+    <h2>امتحان المحاضرة الأولى</h2>
+    <p>اختبر معلوماتك في أساسيات المحاسبة المالية.</p>
+    <p class="small">عدد الأسئلة: 15 سؤالًا • لكل سؤال درجة واحدة.</p>
+
+    <label for="student">اسم الطالب (اختياري):</label>
+    <input id="student" placeholder="اكتب اسمك هنا"
+      style="width:100%;padding:13px;border:1px solid #d1d9e6;border-radius:12px;font-family:inherit;font-size:16px;margin:8px 0 15px">
+
+    <button class="primary" onclick="startQuiz()">ابدأ الامتحان</button>
+  </div>
+
+  <div id="quiz" class="card" style="display:none">
+    <h2>📝 أسئلة الامتحان</h2>
+    <div id="questions"></div>
+    <button class="primary" onclick="gradeQuiz()">تصحيح إجاباتي</button>
+    <button class="secondary" onclick="resetQuiz()">إعادة الامتحان</button>
+  </div>
+
+  <div id="result" class="card">
+    <h2>📊 نتيجة الامتحان</h2>
+    <div class="score">
+      <p id="studentResult"></p>
+      <strong id="score"></strong>
+      <p id="percentage"></p>
+    </div>
+    <h2 style="margin-top:25px">📖 مراجعة الإجابات والشرح</h2>
+    <p class="small">راجع كل سؤال، وشوف إجابتك والإجابة الصحيحة وسبب صحتها.</p>
+    <div id="review"></div>
+    <button class="primary" onclick="resetQuiz()">امتحان جديد</button>
+  </div>
+
+</div>
+
+<footer>
+  إعداد وتصميم الطالب / محمد شهاب الدين محمد
+  <br>منصة تعليمية للمراجعة والتدريب
+</footer>
+
+<script>
+
+// بنك الأسئلة: لتغيير الامتحان مستقبلًا، عدّل الأسئلة داخل هذه القائمة.
+// correct هو رقم الإجابة الصحيحة، ويبدأ من صفر.
+// explanation هو شرح سبب صحة الإجابة.
+
+const questions = [
+{
+q:"ما الهدف الأساسي من المحاسبة المالية؟",
+options:["تسجيل وتحليل العمليات المالية وتوفير معلومات مالية","تحديد مواعيد الموظفين فقط","إدارة الحملات الإعلانية","تحديد أسعار المنافسين فقط"],
+correct:0,
+explanation:"المحاسبة المالية تهتم بتسجيل العمليات المالية وتبويبها وتلخيصها وإعداد التقارير التي تساعد مستخدمي المعلومات المالية."
+},
+{
+q:"أي مما يلي يُعد من أنواع المنشآت التجارية؟",
+options:["المنشآت الفردية","شركات الأشخاص","شركات الأموال","جميع ما سبق"],
+correct:3,
+explanation:"تشمل أشكال المنشآت المنشآت الفردية وشركات الأشخاص وشركات الأموال."
+},
+{
+q:"ما المقصود بالأصول؟",
+options:["المبالغ المستحقة على المنشأة للغير","الموارد الاقتصادية التي تمتلكها أو تسيطر عليها المنشأة","المصروفات التي دفعتها المنشأة فقط","إيرادات المنشأة فقط"],
+correct:1,
+explanation:"الأصول هي الموارد الاقتصادية التي تمتلكها أو تسيطر عليها المنشأة، مثل النقدية والمعدات والمخزون."
+},
+{
+q:"أي مما يلي يُعد مثالًا على الالتزامات؟",
+options:["النقدية بالصندوق","الأثاث","قرض مستحق على المنشأة","رأس المال"],
+correct:2,
+explanation:"الالتزامات تمثل المبالغ أو الحقوق المستحقة على المنشأة للغير، مثل القروض والدائنين."
+},
+{
+q:"رأس المال يمثل:",
+options:["حقوق صاحب المنشأة في أصولها","مصروفات المنشأة","ديون العملاء","المبيعات فقط"],
+correct:0,
+explanation:"رأس المال يمثل حق صاحب المنشأة في صافي أصولها، وهو جزء من حقوق الملكية."
+},
+{
+q:"ما المعادلة المحاسبية الأساسية؟",
+options:["الأصول = الإيرادات − المصروفات","الأصول = الالتزامات + حقوق الملكية","المصروفات = الأصول + المبيعات","الالتزامات = الأصول + رأس المال"],
+correct:1,
+explanation:"المعادلة المحاسبية الأساسية هي الأصول = الالتزامات + حقوق الملكية، ويجب أن تظل متوازنة."
+},
+{
+q:"أي قائمة تُظهر الأصول والالتزامات وحقوق الملكية في تاريخ معين؟",
+options:["قائمة الدخل","قائمة التدفقات النقدية فقط","قائمة المركز المالي","دفتر اليومية"],
+correct:2,
+explanation:"قائمة المركز المالي تعرض أصول المنشأة والتزاماتها وحقوق ملكيتها في تاريخ محدد."
+},
+{
+q:"ما وظيفة دفتر اليومية؟",
+options:["تسجيل العمليات المالية حسب تسلسل حدوثها","عرض الأصول فقط","حساب رواتب الموظفين فقط","إعداد الإعلانات"],
+correct:0,
+explanation:"دفتر اليومية يُستخدم لتسجيل العمليات المالية بالترتيب الزمني، مع تحديد الحسابات المدينة والدائنة."
+},
+{
+q:"ما المقصود بترحيل القيود إلى دفتر الأستاذ؟",
+options:["حذف القيود القديمة","نقل بيانات القيود إلى الحسابات المختصة","إعداد الميزانية التقديرية","حساب الضرائب فقط"],
+correct:1,
+explanation:"الترحيل هو نقل مبالغ القيود من دفتر اليومية إلى الحسابات الخاصة بها في دفتر الأستاذ لتجميع حركة كل حساب."
+},
+{
+q:"ما الغرض من إعداد ميزان المراجعة؟",
+options:["التأكد من تساوي مجموع الأرصدة المدينة والدائنة","حساب الأرباح فقط","معرفة عدد العملاء","تسجيل المشتريات اليومية"],
+correct:0,
+explanation:"يُعد ميزان المراجعة للتحقق من تساوي إجمالي الأرصدة المدينة والدائنة، لكنه لا يضمن اكتشاف جميع الأخطاء المحاسبية."
+},
+{
+q:"عند شراء بضاعة بغرض إعادة بيعها، تُسجل العملية عادةً على أنها:",
+options:["مشتريات","إيرادات أخرى","رأس مال","أصل ثابت دائمًا"],
+correct:0,
+explanation:"البضاعة التي تُشترى بغرض إعادة بيعها تدخل ضمن المشتريات في نظام الجرد الدوري، وفقًا لطريقة المعالجة المستخدمة."
+},
+{
+q:"بيع البضاعة للعملاء يُعد:",
+options:["مصروفًا","إيراد مبيعات","التزامًا دائمًا","رأس مال جديدًا"],
+correct:1,
+explanation:"بيع البضاعة في النشاط المعتاد للمنشأة ينتج عنه إيراد مبيعات."
+},
+{
+q:"أي مما يلي يُعد مثالًا على المصروفات؟",
+options:["إيجار المحل","رأس المال","قرض مستحق","مبلغ مستحق من عميل"],
+correct:0,
+explanation:"إيجار المحل تكلفة تتحملها المنشأة لتشغيل نشاطها، ولذلك يُصنف مصروفًا."
+},
+{
+q:"الإيرادات الأخرى هي:",
+options:["إيرادات ناتجة عن أنشطة ليست من النشاط الرئيسي المعتاد للمنشأة","قروض المنشأة","رأس المال المدفوع","المبالغ المستحقة للموردين"],
+correct:0,
+explanation:"الإيرادات الأخرى هي إيرادات لا تنتج عادةً عن النشاط الرئيسي المعتاد للمنشأة، مثل بعض إيرادات الاستثمار."
+},
+{
+q:"ما الترتيب المعتاد للدورة المحاسبية من تسجيل العمليات حتى إعداد القوائم؟",
+options:[
+"إعداد القوائم ثم اليومية ثم الأستاذ",
+"تسجيل اليومية ثم الترحيل للأستاذ ثم إعداد ميزان المراجعة والقوائم",
+"إعداد ميزان المراجعة ثم تسجيل العمليات",
+"إعداد قائمة الدخل قبل تسجيل أي عملية"
+],
+correct:1,
+explanation:"تبدأ الدورة المحاسبية بتحليل وتسجيل العمليات في دفتر اليومية، ثم ترحيلها إلى دفتر الأستاذ، ثم إعداد ميزان المراجعة، وبعد ذلك تُعد القوائم المالية وفقًا للإجراءات المحاسبية."
+}
+];
+
+function startQuiz(){
+  document.getElementById("quiz").style.display="block";
+  document.getElementById("result").style.display="none";
+  renderQuestions();
+  document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
+}
+
+function renderQuestions(){
+  const area=document.getElementById("questions");
+  area.innerHTML="";
+  questions.forEach((item,i)=>{
+    let html=`<div class="question">
+      <h3>${i+1}. ${item.q}</h3>`;
+    item.options.forEach((option,j)=>{
+      html+=`<label class="option">
+        <input type="radio" name="q${i}" value="${j}">
+        <span>${String.fromCharCode(1571+j)}. ${option}</span>
+      </label>`;
+    });
+    html+="</div>";
+    area.innerHTML+=html;
+  });
+}
+
+function gradeQuiz(){
+  let score=0;
+  let unanswered=0;
+  const answers=[];
+
+  questions.forEach((q,i)=>{
+    const selected=document.querySelector(`input[name="q${i}"]:checked`);
+    if(!selected){
+      unanswered++;
+      answers.push(-1);
+    }else{
+      const answer=Number(selected.value);
+      answers.push(answer);
+      if(answer===q.correct)score++;
+    }
+  });
+
+  if(unanswered>0){
+    if(!confirm(`لسه عندك ${unanswered} سؤال من غير إجابة. تحب تصحح دلوقتي؟`)){
+      return;
+    }
+  }
+
+  const percentage=Math.round(score/questions.length*100);
+  document.getElementById("score").textContent=
+    `${score} / ${questions.length}`;
+  document.getElementById("percentage").textContent=
+    `النسبة المئوية: ${percentage}%`;
+  document.getElementById("studentResult").textContent=
+    document.getElementById("student").value.trim()
+    ? "الطالب: "+document.getElementById("student").value.trim()
+    : "نتيجتك النهائية";
+
+  const review=document.getElementById("review");
+  review.innerHTML="";
+
+  questions.forEach((q,i)=>{
+    const answer=answers[i];
+    const isCorrect=answer===q.correct;
+
+    const userAnswer=answer===-1
+      ? "لم تختر إجابة"
+      : q.options[answer];
+
+    const correctAnswer=q.options[q.correct];
+
+    review.innerHTML+=`
+      <div class="review ${isCorrect?"correct":"wrong"}">
+        <strong>${i+1}. ${q.q}</strong>
+        <p>إجابتك: ${userAnswer}</p>
+        <p class="answer">الإجابة الصحيحة: ${correctAnswer}</p>
+        <p class="explanation"><b>الشرح:</b> ${q.explanation}</p>
+        <span class="badge">${isCorrect?"إجابة صحيحة ✓":"إجابة خاطئة ✗"}</span>
+      </div>`;
+  });
+
+  document.getElementById("result").style.display="block";
+  document.getElementById("result").scrollIntoView({behavior:"smooth"});
+}
+
+function resetQuiz(){
+  document.getElementById("quiz").style.display="none";
+  document.getElementById("result").style.display="none";
+  document.getElementById("student").value="";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+</script>
+</body>
+</html>
