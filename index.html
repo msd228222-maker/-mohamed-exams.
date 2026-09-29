@@ -166,8 +166,7 @@ footer{text-align:center;color:#64748b;padding:25px 12px;font-size:14px}
 let questions = [];
 let currentExamId = null;
 let currentExamTitle = "امتحان المحاضرة الأولى";
-const SUPABASE_FUNCTION_URL = "https://uuyblltrbqctdglraely.supabase.co/functions/v1/exam-api";
-
+const SUPABASE_FUNCTION_URL = "https://uuyblltrbqctdglraely.supabase.co/functions/v1/smart-task";
 async function callExamApi(payload){
   const response = await fetch(SUPABASE_FUNCTION_URL, {
     method: "POST",
