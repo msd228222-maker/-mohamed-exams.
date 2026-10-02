@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>امتحانات محمد شهاب الدين</title>
+
+<title>منصة امتحانات الطالب - mo_shehab</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+box-sizing:border-box
+}
 
 body{
 margin:0;
@@ -182,9 +185,15 @@ font-size:13px
 <body>
 
 <header>
+
 <h1>🎓 منصة امتحانات الطالب</h1>
-<p>إعداد وتصميم الطالب / محمد شهاب الدين محمد</p>
-<p>اختبر نفسك • صحح إجاباتك • افهم أخطاءك</p>
+
+<p>تصميم mo_shehab</p>
+
+<p>
+اختبر نفسك • صحح إجاباتك • افهم أخطاءك
+</p>
+
 </header>
 
 <div class="container">
@@ -224,31 +233,53 @@ font-size:16px;
 margin:8px 0 15px
 ">
 
-<button class="primary" onclick="startQuiz()">
+<button
+class="primary"
+onclick="startQuiz()"
+>
 ابدأ الامتحان
 </button>
 
 </div>
 
-<div id="quiz" class="card" style="display:none">
 
-<h2>📝 أسئلة الامتحان</h2>
+<div
+id="quiz"
+class="card"
+style="display:none"
+>
+
+<h2>
+📝 أسئلة الامتحان
+</h2>
 
 <div id="questions"></div>
 
-<button class="primary" onclick="gradeQuiz()">
+<button
+class="primary"
+onclick="gradeQuiz()"
+>
 تصحيح إجاباتي
 </button>
 
-<button class="secondary" onclick="resetQuiz()">
+<button
+class="secondary"
+onclick="resetQuiz()"
+>
 إعادة الامتحان
 </button>
 
 </div>
 
-<div id="result" class="card">
 
-<h2>📊 نتيجة الامتحان</h2>
+<div
+id="result"
+class="card"
+>
+
+<h2>
+📊 نتيجة الامتحان
+</h2>
 
 <div class="score">
 
@@ -260,17 +291,25 @@ margin:8px 0 15px
 
 </div>
 
+
 <h2 style="margin-top:25px">
+
 📖 مراجعة الإجابات والشرح
+
 </h2>
 
 <p class="small">
+
 راجع كل سؤال، وشوف إجابتك والإجابة الصحيحة وسبب صحتها.
+
 </p>
 
 <div id="review"></div>
 
-<button class="primary" onclick="resetQuiz()">
+<button
+class="primary"
+onclick="resetQuiz()"
+>
 امتحان جديد
 </button>
 
@@ -278,24 +317,28 @@ margin:8px 0 15px
 
 </div>
 
+
 <footer>
-إعداد وتصميم الطالب / محمد شهاب الدين محمد
+
+تصميم mo_shehab
+
 <br>
+
 منصة تعليمية للمراجعة والتدريب
+
 </footer>
+
 
 <script>
 
 let questions=[];
+
 let currentExamId=null;
 
-/*
-الرابط الصحيح للدالة عندك هو:
-smart-task
-*/
 
 const SUPABASE_FUNCTION_URL=
 "https://uuyblltrbqctdglraely.supabase.co/functions/v1/smart-task";
+
 
 const SUPABASE_KEY=
 "sb_publishable_SJhSQjYLA4wXK0EUjuvRAQ_0fjRwHg0";
@@ -315,8 +358,10 @@ headers:{
 },
 
 body:JSON.stringify(payload)
+
 }
 );
+
 
 const d=await r.json().catch(
 ()=>({
@@ -324,19 +369,21 @@ error:"استجابة غير مفهومة من الخادم"
 })
 );
 
+
 if(!r.ok){
 
 throw new Error(
-d.error||"حصل خطأ في الاتصال بالخادم"
+d.error ||
+"حصل خطأ في الاتصال بالخادم"
 );
 
 }
 
+
 return d;
+
 }
 
-
-/* تحميل بيانات الامتحان */
 
 async function loadExamInfo(){
 
@@ -347,27 +394,33 @@ await callExamApi({
 action:"get_exam"
 });
 
+
 document.getElementById(
 "examSubject"
 ).textContent=
-d.exam?.subject||"";
+d.exam?.subject || "";
+
 
 document.getElementById(
 "examTitle"
 ).textContent=
-d.exam?.title||"";
+d.exam?.title || "";
+
 
 document.getElementById(
 "examDescription"
 ).textContent=
-d.exam?.description||"";
+d.exam?.description || "";
+
 
 document.getElementById(
 "examCount"
 ).textContent=
-`عدد الأسئلة: ${d.questions?.length||0} سؤالًا • لكل سؤال درجة واحدة.`;
+`عدد الأسئلة: ${d.questions?.length || 0} سؤالًا • لكل سؤال درجة واحدة.`;
 
 }
+
+
 catch(e){
 
 document.getElementById(
@@ -375,10 +428,12 @@ document.getElementById(
 ).textContent=
 "تعذر تحميل البيانات";
 
+
 document.getElementById(
 "examTitle"
 ).textContent=
 "حدث خطأ";
+
 
 document.getElementById(
 "examDescription"
@@ -390,12 +445,13 @@ e.message;
 }
 
 
-/* بدء الامتحان */
-
 async function startQuiz(){
 
 const b=
-document.querySelector("button.primary");
+document.querySelector(
+"button.primary"
+);
+
 
 try{
 
@@ -404,16 +460,20 @@ b.disabled=true;
 b.textContent=
 "جاري تحميل الامتحان...";
 
+
 const d=
 await callExamApi({
 action:"get_exam"
 });
 
+
 currentExamId=
 d.exam.id;
 
+
 questions=
-d.questions||[];
+d.questions || [];
+
 
 if(!questions.length){
 
@@ -423,15 +483,21 @@ throw new Error(
 
 }
 
+
 document.getElementById(
 "quiz"
-).style.display="block";
+).style.display=
+"block";
+
 
 document.getElementById(
 "result"
-).style.display="none";
+).style.display=
+"none";
+
 
 renderQuestions();
+
 
 document.getElementById(
 "quiz"
@@ -440,6 +506,8 @@ behavior:"smooth"
 });
 
 }
+
+
 catch(e){
 
 alert(
@@ -448,6 +516,8 @@ e.message
 );
 
 }
+
+
 finally{
 
 b.disabled=false;
@@ -460,23 +530,30 @@ b.textContent=
 }
 
 
-/* عرض الأسئلة */
-
 function renderQuestions(){
 
 const a=
-document.getElementById("questions");
+document.getElementById(
+"questions"
+);
+
 
 a.innerHTML="";
+
 
 questions.forEach(
 (q,i)=>{
 
 let h=
 `<div class="question">
-<h3>${i+1}. ${esc(q.question_text||"")}</h3>`;
 
-(q.options||[]).forEach(
+<h3>
+${i+1}.
+${esc(q.question_text || "")}
+</h3>`;
+
+
+(q.options || []).forEach(
 (o,j)=>{
 
 h+=
@@ -497,8 +574,10 @@ ${esc(o)}
 
 });
 
+
 h+=
 "</div>";
+
 
 a.innerHTML+=h;
 
@@ -506,8 +585,6 @@ a.innerHTML+=h;
 
 }
 
-
-/* حماية النص */
 
 function esc(v){
 
@@ -529,12 +606,12 @@ c=>({
 }
 
 
-/* تصحيح الامتحان */
-
 async function gradeQuiz(){
 
-let unanswered=0;
-let answers=[];
+let u=0;
+
+let a=[];
+
 
 questions.forEach(
 (q,i)=>{
@@ -544,16 +621,18 @@ document.querySelector(
 `input[name="q${i}"]:checked`
 );
 
+
 if(!s){
 
-unanswered++;
+u++;
 
-answers.push(-1);
+a.push(-1);
 
 }
+
 else{
 
-answers.push(
+a.push(
 Number(s.value)
 );
 
@@ -563,9 +642,9 @@ Number(s.value)
 
 
 if(
-unanswered &&
+u &&
 !confirm(
-`لسه عندك ${unanswered} سؤال من غير إجابة. تحب تصحح دلوقتي؟`
+`لسه عندك ${u} سؤال من غير إجابة. تحب تصحح دلوقتي؟`
 )
 ){
 
@@ -602,7 +681,7 @@ document
 .value
 .trim(),
 
-answers:answers
+answers:a
 
 });
 
@@ -641,46 +720,62 @@ document.getElementById(
 "review"
 );
 
+
 r.innerHTML="";
 
 
-(d.review||[]).forEach(
+(d.review || []).forEach(
 (x,i)=>{
 
 const ok=
 !!x.is_correct;
 
+
 r.innerHTML+=
 `<div class="review ${ok?"correct":"wrong"}">
 
 <strong>
+
 ${i+1}.
 ${esc(x.question)}
+
 </strong>
 
+
 <p>
+
 إجابتك:
 ${esc(
-x.user_answer||
+x.user_answer ||
 "لم تختر إجابة"
 )}
+
 </p>
+
 
 <p class="answer">
+
 الإجابة الصحيحة:
 ${esc(
-x.correct_answer||""
+x.correct_answer || ""
 )}
+
 </p>
+
 
 <p class="explanation">
+
 <b>الشرح:</b>
+
 ${esc(
-x.explanation||""
+x.explanation || ""
 )}
+
 </p>
 
+
 <span class="badge">
+
 ${
 ok
 ?
@@ -688,6 +783,7 @@ ok
 :
 "إجابة خاطئة ✗"
 }
+
 </span>
 
 </div>`;
@@ -697,7 +793,8 @@ ok
 
 document.getElementById(
 "result"
-).style.display="block";
+).style.display=
+"block";
 
 
 document.getElementById(
@@ -706,8 +803,9 @@ document.getElementById(
 behavior:"smooth"
 });
 
-
 }
+
+
 catch(e){
 
 alert(
@@ -716,6 +814,8 @@ e.message
 );
 
 }
+
+
 finally{
 
 b.disabled=false;
@@ -728,25 +828,29 @@ b.textContent=
 }
 
 
-/* إعادة الامتحان */
-
 function resetQuiz(){
 
 document.getElementById(
 "quiz"
-).style.display="none";
+).style.display=
+"none";
+
 
 document.getElementById(
 "result"
-).style.display="none";
+).style.display=
+"none";
+
 
 document.getElementById(
 "student"
 ).value="";
 
+
 questions=[];
 
 currentExamId=null;
+
 
 window.scrollTo({
 top:0,
@@ -756,11 +860,9 @@ behavior:"smooth"
 }
 
 
-/* تشغيل تحميل بيانات الامتحان */
-
 loadExamInfo();
 
 </script>
 
 </body>
-  </html>
+</html>
