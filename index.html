@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -8,6 +7,7 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Tahoma,Arial,sans-serif;
@@ -15,6 +15,7 @@ body{
   color:#182238;
   line-height:1.8;
 }
+
 header{
   background:linear-gradient(135deg,#101d40,#2457a7);
   color:white;
@@ -22,44 +23,77 @@ header{
   padding:30px 15px;
   border-radius:0 0 28px 28px;
 }
-header h1{font-size:23px;margin:0 0 8px}
-header p{margin:0;color:#dbeafe;font-size:14px}
-.container{max-width:760px;margin:22px auto;padding:0 14px}
+
+header h1{
+  font-size:23px;
+  margin:0 0 8px
+}
+
+header p{
+  margin:0;
+  color:#dbeafe;
+  font-size:14px
+}
+
+.container{
+  max-width:760px;
+  margin:22px auto;
+  padding:0 14px
+}
+
 .card{
   background:white;
   padding:20px;
   margin-bottom:17px;
   border-radius:18px;
-  box-shadow:0 5px 20px #1e3a8a0d;
+  box-shadow:0 5px 20px #1e3a8a0d
 }
-h2{font-size:20px;margin-top:0;color:#173b7a}
-select,button{
+
+h2{
+  font-size:20px;
+  margin-top:0;
+  color:#173b7a
+}
+
+button{
   font-family:inherit;
   font-size:16px;
   border-radius:12px;
   padding:13px;
 }
-select{
-  width:100%;
-  border:1px solid #d1d9e6;
-  background:white;
-  margin:8px 0 15px;
-}
+
 button{
   border:none;
   cursor:pointer;
-  font-weight:bold;
+  font-weight:bold
 }
-.primary{background:#2457a7;color:white;width:100%}
-.secondary{background:#e7eefb;color:#173b7a;width:100%;margin-top:10px}
+
+.primary{
+  background:#2457a7;
+  color:white;
+  width:100%
+}
+
+.secondary{
+  background:#e7eefb;
+  color:#173b7a;
+  width:100%;
+  margin-top:10px
+}
+
 .question{
   border:1px solid #e4e9f2;
   padding:17px;
   margin:15px 0;
   border-radius:15px;
-  background:#fff;
+  background:#fff
 }
-.question h3{font-size:17px;margin:0 0 12px}
+
+.question h3{
+  font-size:17px;
+  margin:0 0 12px
+}
+
 .option{
   display:flex;
   align-items:flex-start;
@@ -68,41 +102,82 @@ button{
   border:1px solid #e1e7f0;
   border-radius:11px;
   margin:8px 0;
-  cursor:pointer;
+  cursor:pointer
 }
+
 .option:has(input:checked){
   background:#edf4ff;
-  border-color:#3975cc;
+  border-color:#3975cc
 }
-.option input{margin-top:7px;accent-color:#2457a7}
-#result{display:none}
+
+.option input{
+  margin-top:7px;
+  accent-color:#2457a7
+}
+
+#result{
+  display:none
+}
+
 .score{
   text-align:center;
   background:#eaf2ff;
   padding:20px;
-  border-radius:15px;
+  border-radius:15px
 }
-.score strong{font-size:35px;color:#174b9b}
+
+.score strong{
+  font-size:35px;
+  color:#174b9b
+}
+
 .review{
   padding:15px;
   border-radius:12px;
   margin:12px 0;
   border-right:5px solid #9ca3af;
-  background:#f8fafc;
+  background:#f8fafc
 }
-.correct{border-color:#16a34a;background:#f0fdf4}
-.wrong{border-color:#dc2626;background:#fef2f2}
-.answer{font-weight:bold;color:#166534}
-.explanation{color:#334155;margin-top:8px}
-footer{text-align:center;color:#64748b;padding:25px 12px;font-size:14px}
-.small{font-size:13px;color:#64748b}
+
+.correct{
+  border-color:#16a34a;
+  background:#f0fdf4
+}
+
+.wrong{
+  border-color:#dc2626;
+  background:#fef2f2
+}
+
+.answer{
+  font-weight:bold;
+  color:#166534
+}
+
+.explanation{
+  color:#334155;
+  margin-top:8px
+}
+
+footer{
+  text-align:center;
+  color:#64748b;
+  padding:25px 12px;
+  font-size:14px
+}
+
+.small{
+  font-size:13px;
+  color:#64748b
+}
+
 .badge{
   display:inline-block;
   background:#e8efff;
   color:#2457a7;
   padding:3px 10px;
   border-radius:30px;
-  font-size:13px;
+  font-size:13px
 }
 </style>
 </head>
@@ -118,174 +193,567 @@ footer{text-align:center;color:#64748b;padding:25px 12px;font-size:14px}
 <div class="container">
 
   <div class="card">
-    <span class="badge">المحاسبة المالية</span>
-    <h2>امتحان المحاضرة الأولى</h2>
-    <p>اختبر معلوماتك في أساسيات المحاسبة المالية.</p>
-    <p class="small">عدد الأسئلة: 15 سؤالًا • لكل سؤال درجة واحدة.</p>
+
+    <span class="badge" id="examSubject">
+      جاري تحميل المادة...
+    </span>
+
+    <h2 id="examTitle">
+      جاري تحميل الامتحان...
+    </h2>
+
+    <p id="examDescription">
+      جاري تحميل بيانات الامتحان...
+    </p>
+
+    <p class="small" id="examCount">
+      جاري تحميل عدد الأسئلة...
+    </p>
 
     <label for="student">اسم الطالب (اختياري):</label>
-    <input id="student" placeholder="اكتب اسمك هنا"
-      style="width:100%;padding:13px;border:1px solid #d1d9e6;border-radius:12px;font-family:inherit;font-size:16px;margin:8px 0 15px">
 
-    <button class="primary" onclick="startQuiz()">ابدأ الامتحان</button>
+    <input
+      id="student"
+      placeholder="اكتب اسمك هنا"
+      style="width:100%;padding:13px;border:1px solid #d1d9e6;border-radius:12px;font-family:inherit;font-size:16px;margin:8px 0 15px"
+    >
+
+    <button class="primary" onclick="startQuiz()">
+      ابدأ الامتحان
+    </button>
+
   </div>
 
   <div id="quiz" class="card" style="display:none">
+
     <h2>📝 أسئلة الامتحان</h2>
+
     <div id="questions"></div>
-    <button class="primary" onclick="gradeQuiz()">تصحيح إجاباتي</button>
-    <button class="secondary" onclick="resetQuiz()">إعادة الامتحان</button>
+
+    <button class="primary" onclick="gradeQuiz()">
+      تصحيح إجاباتي
+    </button>
+
+    <button class="secondary" onclick="resetQuiz()">
+      إعادة الامتحان
+    </button>
+
   </div>
 
   <div id="result" class="card">
+
     <h2>📊 نتيجة الامتحان</h2>
+
     <div class="score">
+
       <p id="studentResult"></p>
+
       <strong id="score"></strong>
+
       <p id="percentage"></p>
+
     </div>
-    <h2 style="margin-top:25px">📖 مراجعة الإجابات والشرح</h2>
-    <p class="small">راجع كل سؤال، وشوف إجابتك والإجابة الصحيحة وسبب صحتها.</p>
+
+    <h2 style="margin-top:25px">
+      📖 مراجعة الإجابات والشرح
+    </h2>
+
+    <p class="small">
+      راجع كل سؤال، وشوف إجابتك والإجابة الصحيحة وسبب صحتها.
+    </p>
+
     <div id="review"></div>
-    <button class="primary" onclick="resetQuiz()">امتحان جديد</button>
+
+    <button class="primary" onclick="resetQuiz()">
+      امتحان جديد
+    </button>
+
   </div>
 
 </div>
 
 <footer>
   إعداد وتصميم الطالب / محمد شهاب الدين محمد
-  <br>منصة تعليمية للمراجعة والتدريب
+  <br>
+  منصة تعليمية للمراجعة والتدريب
 </footer>
 
 <script>
 
-// بنك الأسئلة: لتغيير الامتحان مستقبلًا، عدّل الأسئلة داخل هذه القائمة.
-// correct هو رقم الإجابة الصحيحة، ويبدأ من صفر.
-// explanation هو شرح سبب صحة الإجابة.
-
 let questions = [];
 let currentExamId = null;
-let currentExamTitle = "امتحان المحاضرة الأولى";
-const SUPABASE_FUNCTION_URL = "https://uuyblltrbqctdglraely.supabase.co/functions/v1/smart-task";
+let currentExamTitle = "";
+
+const SUPABASE_FUNCTION_URL =
+"https://uuyblltrbqctdglraely.supabase.co/functions/v1/exam-api";
+
+const SUPABASE_KEY =
+"sb_publishable_SJhSQjYLA4wXK0EUjuvRAQ_0fjRwHg0";
+
+
 async function callExamApi(payload){
+
   const response = await fetch(SUPABASE_FUNCTION_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "apikey": "sb_publishable_SJhSQjYLA4wXK0EUjuvRAQ_0fjRwHg0",
-      "Authorization": "Bearer sb_publishable_SJhSQjYLA4wXK0EUjuvRAQ_0fjRwHg0"
+
+    method:"POST",
+
+    headers:{
+      "Content-Type":"application/json",
+      "apikey":SUPABASE_KEY,
+      "Authorization":"Bearer "+SUPABASE_KEY
     },
-    body: JSON.stringify(payload)
+
+    body:JSON.stringify(payload)
+
   });
-  const data = await response.json().catch(()=>({error:"استجابة غير مفهومة من الخادم"}));
-  if(!response.ok) throw new Error(data.error || "حصل خطأ في الاتصال بالخادم");
+
+  const data =
+    await response
+      .json()
+      .catch(()=>({
+        error:"استجابة غير مفهومة من الخادم"
+      }));
+
+  if(!response.ok){
+
+    throw new Error(
+      data.error ||
+      "حصل خطأ في الاتصال بالخادم"
+    );
+
+  }
+
   return data;
 }
 
-async function startQuiz(){
-  const btn = document.querySelector('button.primary');
-  const studentName = document.getElementById("student").value.trim();
+
+/* تحميل بيانات الامتحان بمجرد فتح الموقع */
+
+async function loadExamInfo(){
+
   try{
-    btn.disabled = true;
-    btn.textContent = "جاري تحميل الامتحان...";
-    const data = await callExamApi({action:"get_exam"});
-    currentExamId = data.exam.id;
-    currentExamTitle = data.exam.title || "امتحان المحاضرة الأولى";
-    questions = data.questions || [];
-    if(!questions.length) throw new Error("الامتحان لا يحتوي على أسئلة منشورة.");
-    document.getElementById("quiz").style.display="block";
-    document.getElementById("result").style.display="none";
-    renderQuestions();
-    document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
+
+    const data =
+      await callExamApi({
+        action:"get_exam"
+      });
+
+    if(!data.exam){
+      throw new Error("لم يتم العثور على بيانات الامتحان");
+    }
+
+    document.getElementById("examSubject").textContent =
+      data.exam.subject || "";
+
+    document.getElementById("examTitle").textContent =
+      data.exam.title || "";
+
+    document.getElementById("examDescription").textContent =
+      data.exam.description || "";
+
+    const count =
+      data.questions?.length || 0;
+
+    document.getElementById("examCount").textContent =
+      `عدد الأسئلة: ${count} سؤالًا • لكل سؤال درجة واحدة.`;
+
   }catch(err){
-    alert("تعذر تحميل الامتحان: " + err.message);
-  }finally{
-    btn.disabled = false;
-    btn.textContent = "ابدأ الامتحان";
+
+    document.getElementById("examSubject").textContent =
+      "تعذر تحميل البيانات";
+
+    document.getElementById("examTitle").textContent =
+      "حدث خطأ";
+
+    document.getElementById("examDescription").textContent =
+      err.message;
+
   }
+
 }
+
+
+/* بدء الامتحان */
+
+async function startQuiz(){
+
+  const btn =
+    document.querySelector(
+      'button.primary'
+    );
+
+  try{
+
+    btn.disabled = true;
+
+    btn.textContent =
+      "جاري تحميل الامتحان...";
+
+    const data =
+      await callExamApi({
+        action:"get_exam"
+      });
+
+    currentExamId =
+      data.exam.id;
+
+    currentExamTitle =
+      data.exam.title || "";
+
+    questions =
+      data.questions || [];
+
+    if(!questions.length){
+
+      throw new Error(
+        "الامتحان لا يحتوي على أسئلة منشورة."
+      );
+
+    }
+
+    document.getElementById("quiz")
+      .style.display="block";
+
+    document.getElementById("result")
+      .style.display="none";
+
+    renderQuestions();
+
+    document.getElementById("quiz")
+      .scrollIntoView({
+        behavior:"smooth"
+      });
+
+  }catch(err){
+
+    alert(
+      "تعذر تحميل الامتحان: "
+      + err.message
+    );
+
+  }finally{
+
+    btn.disabled=false;
+
+    btn.textContent =
+      "ابدأ الامتحان";
+
+  }
+
+}
+
+
+/* عرض الأسئلة */
 
 function renderQuestions(){
-  const area=document.getElementById("questions");
+
+  const area =
+    document.getElementById("questions");
+
   area.innerHTML="";
+
   questions.forEach((item,i)=>{
-    const qText = escapeHtml(item.question_text || item.q || "");
-    let html=`<div class="question">
-      <h3>${i+1}. ${qText}</h3>`;
-    (item.options || []).forEach((option,j)=>{
-      html+=`<label class="option">
-        <input type="radio" name="q${i}" value="${j}">
-        <span>${String.fromCharCode(1571+j)}. ${escapeHtml(option)}</span>
-      </label>`;
-    });
-    html+="</div>";
-    area.innerHTML+=html;
+
+    const qText =
+      escapeHtml(
+        item.question_text ||
+        item.q ||
+        ""
+      );
+
+    let html=`
+      <div class="question">
+
+        <h3>
+          ${i+1}. ${qText}
+        </h3>
+    `;
+
+    (item.options || []).forEach(
+      (option,j)=>{
+
+        html+=`
+
+          <label class="option">
+
+            <input
+              type="radio"
+              name="q${i}"
+              value="${j}"
+            >
+
+            <span>
+              ${String.fromCharCode(1571+j)}.
+              ${escapeHtml(option)}
+            </span>
+
+          </label>
+
+        `;
+
+      }
+    );
+
+    html += "</div>";
+
+    area.innerHTML += html;
+
   });
+
 }
+
+
+/* حماية عرض النصوص */
 
 function escapeHtml(value){
-  return String(value).replace(/[&<>"']/g, ch => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[ch]));
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      ch => ({
+
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+
+      }[ch])
+
+    );
+
 }
+
+
+/* تصحيح الامتحان */
 
 async function gradeQuiz(){
-  let unanswered=0;
-  const answers=[];
-  questions.forEach((q,i)=>{
-    const selected=document.querySelector(`input[name="q${i}"]:checked`);
-    if(!selected){ unanswered++; answers.push(-1); }
-    else answers.push(Number(selected.value));
-  });
-  if(unanswered>0 && !confirm(`لسه عندك ${unanswered} سؤال من غير إجابة. تحب تصحح دلوقتي؟`)) return;
 
-  const submitBtn = document.querySelector('#quiz button.primary');
-  try{
-    submitBtn.disabled=true;
-    submitBtn.textContent="جاري التصحيح وحفظ النتيجة...";
-    const data=await callExamApi({
-      action:"submit",
-      exam_id:currentExamId,
-      student_name:document.getElementById("student").value.trim(),
-      answers
-    });
-    document.getElementById("score").textContent=`${data.score} / ${data.total}`;
-    document.getElementById("percentage").textContent=`النسبة المئوية: ${data.percentage}%`;
-    document.getElementById("studentResult").textContent=
-      document.getElementById("student").value.trim()
-      ? "الطالب: "+document.getElementById("student").value.trim()
-      : "نتيجتك النهائية";
-    const review=document.getElementById("review");
-    review.innerHTML="";
-    (data.review || []).forEach((item,i)=>{
-      const isCorrect=!!item.is_correct;
-      review.innerHTML+=`
-        <div class="review ${isCorrect?"correct":"wrong"}">
-          <strong>${i+1}. ${escapeHtml(item.question)}</strong>
-          <p>إجابتك: ${escapeHtml(item.user_answer || "لم تختر إجابة")}</p>
-          <p class="answer">الإجابة الصحيحة: ${escapeHtml(item.correct_answer || "")}</p>
-          <p class="explanation"><b>الشرح:</b> ${escapeHtml(item.explanation || "")}</p>
-          <span class="badge">${isCorrect?"إجابة صحيحة ✓":"إجابة خاطئة ✗"}</span>
-        </div>`;
-    });
-    document.getElementById("result").style.display="block";
-    document.getElementById("result").scrollIntoView({behavior:"smooth"});
-  }catch(err){
-    alert("تعذر تصحيح الامتحان: " + err.message);
-  }finally{
-    submitBtn.disabled=false;
-    submitBtn.textContent="تصحيح إجاباتي";
+  let unanswered=0;
+
+  const answers=[];
+
+  questions.forEach((q,i)=>{
+
+    const selected =
+      document.querySelector(
+        `input[name="q${i}"]:checked`
+      );
+
+    if(!selected){
+
+      unanswered++;
+
+      answers.push(-1);
+
+    }else{
+
+      answers.push(
+        Number(selected.value)
+      );
+
+    }
+
+  });
+
+
+  if(
+    unanswered > 0 &&
+    !confirm(
+      `لسه عندك ${unanswered} سؤال من غير إجابة. تحب تصحح دلوقتي؟`
+    )
+  ){
+
+    return;
+
   }
+
+
+  const submitBtn =
+    document.querySelector(
+      '#quiz button.primary'
+    );
+
+
+  try{
+
+    submitBtn.disabled=true;
+
+    submitBtn.textContent =
+      "جاري التصحيح وحفظ النتيجة...";
+
+
+    const data =
+      await callExamApi({
+
+        action:"submit",
+
+        exam_id:currentExamId,
+
+        student_name:
+          document
+            .getElementById("student")
+            .value
+            .trim(),
+
+        answers
+
+      });
+
+
+    document.getElementById("score")
+      .textContent =
+      `${data.score} / ${data.total}`;
+
+
+    document.getElementById("percentage")
+      .textContent =
+      `النسبة المئوية: ${data.percentage}%`;
+
+
+    const name =
+      document
+        .getElementById("student")
+        .value
+        .trim();
+
+
+    document.getElementById(
+      "studentResult"
+    ).textContent =
+      name
+        ? "الطالب: " + name
+        : "نتيجتك النهائية";
+
+
+    const review =
+      document.getElementById("review");
+
+    review.innerHTML="";
+
+
+    (data.review || []).forEach(
+      (item,i)=>{
+
+        const isCorrect =
+          !!item.is_correct;
+
+
+        review.innerHTML += `
+
+          <div class="review ${
+            isCorrect
+              ? "correct"
+              : "wrong"
+          }">
+
+            <strong>
+              ${i+1}.
+              ${escapeHtml(item.question)}
+            </strong>
+
+            <p>
+              إجابتك:
+              ${escapeHtml(
+                item.user_answer ||
+                "لم تختر إجابة"
+              )}
+            </p>
+
+            <p class="answer">
+              الإجابة الصحيحة:
+              ${escapeHtml(
+                item.correct_answer || ""
+              )}
+            </p>
+
+            <p class="explanation">
+
+              <b>الشرح:</b>
+
+              ${escapeHtml(
+                item.explanation || ""
+              )}
+
+            </p>
+
+            <span class="badge">
+
+              ${
+                isCorrect
+                ? "إجابة صحيحة ✓"
+                : "إجابة خاطئة ✗"
+              }
+
+            </span>
+
+          </div>
+
+        `;
+
+      }
+    );
+
+
+    document.getElementById("result")
+      .style.display="block";
+
+
+    document.getElementById("result")
+      .scrollIntoView({
+        behavior:"smooth"
+      });
+
+
+  }catch(err){
+
+    alert(
+      "تعذر تصحيح الامتحان: "
+      + err.message
+    );
+
+  }finally{
+
+    submitBtn.disabled=false;
+
+    submitBtn.textContent =
+      "تصحيح إجاباتي";
+
+  }
+
 }
+
+
+/* إعادة الامتحان */
 
 function resetQuiz(){
-  document.getElementById("quiz").style.display="none";
-  document.getElementById("result").style.display="none";
-  document.getElementById("student").value="";
+
+  document.getElementById("quiz")
+    .style.display="none";
+
+  document.getElementById("result")
+    .style.display="none";
+
+  document.getElementById("student")
+    .value="";
+
   questions=[];
+
   currentExamId=null;
-  window.scrollTo({top:0,behavior:"smooth"});
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
 }
+
+
+/* تشغيل تحميل البيانات */
+
+loadExamInfo();
+
 </script>
+
 </body>
 </html>
